@@ -10,29 +10,69 @@ html, body {
   color: #333;
 }
 
-h1, h2 {
-  color: #0f223d; /* Matches header/footer color */
-}
-
-.container {
-  flex: 1;
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: rgba(15, 34, 61, 0.9); /* Darker background to match header */
-  border-radius: 8px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+/* Consistent Header Styling */
+.header-content {
+  background-color: #0f223d;
   color: #fff;
-  min-height: 100vh; /* Increased min-height to make the page appear taller */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-form h2 {
+
+
+
+.hotel-name {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #b8860b;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.navbar ul li a:hover {
+  background-color: #b8860b;
+}
+
+/* Consistent Page Header Styling */
+.page-header {
   color: #b8860b;
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
 }
 
+/* Container Styling */
+.container {
+  width: 800px; /* Fixed width for consistency across pages */
+  margin: 110px auto 110px auto ; /* Adjusts top and bottom margins */
+  padding: 2rem;
+  background-color: rgba(15, 34, 61, 0.9);
+  border-radius: 8px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+
+
+
+/* Form Styling */
 form label {
   font-size: 1.1rem;
   color: #b8860b;
@@ -56,7 +96,7 @@ form select:focus, form input[type="number"]:focus {
   box-shadow: 0 0 5px rgba(184, 134, 11, 0.4);
 }
 
-/* Improved Price Panel Styling */
+/* Price Panel Styling */
 .price-panel {
   background-color: rgba(255, 255, 255, 0.95);
   padding: 20px;
@@ -78,6 +118,7 @@ form select:focus, form input[type="number"]:focus {
   margin-top: 10px;
 }
 
+/* Button Styling */
 button {
   background-color: #b8860b;
   color: #fff;
@@ -94,41 +135,6 @@ button {
 
 button:hover {
   background-color: #d4a022;
-}
-
-/* Header Styling */
-.header-content {
-  background-color: #0f223d;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-}
-
-.hotel-name {
-  font-size: 1.8rem;
-  margin: 0;
-  color: #b8860b;
-}
-
-.navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 20px;
-}
-
-.navbar ul li a {
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-}
-
-.navbar ul li a:hover {
-  background-color: #b8860b;
 }
 
 /* Footer Styling */
@@ -164,4 +170,11 @@ button:hover {
 .footer-social a img {
   width: 24px;
   height: 24px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #ccc;
 }
