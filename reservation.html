@@ -34,6 +34,20 @@
       <label for="nights">Number of Nights:</label>
       <input type="number" id="nights" name="nights" min="1" max="10" required>
 
+      <h3>Additional Options:</h3>
+      <div>
+        <input type="checkbox" id="breakfast" name="breakfast" value="10" onchange="calculatePrice()">
+        <label for="breakfast">Breakfast ($10)</label>
+      </div>
+      <div>
+        <input type="checkbox" id="lunch" name="lunch" value="20" onchange="calculatePrice()">
+        <label for="lunch">Lunch ($20)</label>
+      </div>
+      <div>
+        <input type="checkbox" id="dinner" name="dinner" value="10" onchange="calculatePrice()">
+        <label for="dinner">Dinner ($10)</label>
+      </div>
+
       <div class="price-panel">
         <h2>Price Estimate</h2>
         <p id="priceEstimate">Select room type and number of nights</p>
@@ -91,19 +105,35 @@
     function updateFormAction() {
       const roomType = document.getElementById('roomType').value;
       const nights = document.getElementById('nights').value;
-      
+      const breakfast = document.getElementById('breakfast').checked ? '10' : '0';
+      const lunch = document.getElementById('lunch').checked ? '20' : '0';
+      const dinner = document.getElementById('dinner').checked ? '10' : '0';
+
       const form = document.querySelector('form');
-      form.action = `payment.html?roomType=${roomType}&nights=${nights}`;
+      form.action = `payment.html?roomType=${roomType}&nights=${nights}&breakfast=${breakfast}&lunch=${lunch}&dinner=${dinner}`;
     }
 
     function calculatePrice() {
-      const roomType = document.getElementById('roomType').value;
-      const nights = document.getElementById('nights').value;
+      const roomType = parseInt(document.getElementById('roomType').value);
+      const nights = parseInt(document.getElementById('nights').value);
+      const breakfast = document.getElementById('breakfast').checked ? 10 : 0;
+      const lunch = document.getElementById('lunch').checked ? 20 : 0;
+      const dinner = document.getElementById('dinner').checked ? 10 : 0;
       const priceEstimate = document.getElementById('priceEstimate');
 
       if (nights && roomType) {
-        const total = roomType * nights;
-        priceEstimate.textContent = `Estimated Price: $${total}`;
+        let total = roomType * nights + nights * (lunch + dinner);
+        let freeBreakfast = false;
+
+        if (breakfast && lunch && dinner) {
+          freeBreakfast = true;
+        } else {
+          total += nights * breakfast;
+        }
+
+        priceEstimate.textContent = freeBreakfast
+          ? `Estimated Price: $${total} (Breakfast included for free!)`
+          : `Estimated Price: $${total}`;
       } else {
         priceEstimate.textContent = 'Select room type and number of nights';
       }
