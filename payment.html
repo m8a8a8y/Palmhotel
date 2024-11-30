@@ -14,7 +14,6 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="reservation.html">Reservation</a></li>
-          <li><a href="update-reservation.html">Update Reservation</a></li>
         </ul>
       </nav>
     </div>
@@ -26,6 +25,7 @@
       <p id="reservationSummary">
         Room Type: Loading... <br>
         Number of Nights: Loading... <br>
+        Additional Options: Loading... <br>
         Estimated Total: Loading...
       </p>
     </div>
@@ -33,32 +33,51 @@
     <!-- Payment Form -->
     <form action="confirmation.html">
       <h2>Payment Information</h2>
-      <label for="cardName">Cardholder Name:</label>
-      <input type="text" id="cardName" name="cardName" required>
+      <div class="input-group">
+        <label for="cardName">Cardholder Name:</label>
+        <input type="text" id="cardName" name="cardName">
+      </div>
 
-      <label for="cardNumber">Card Number:</label>
-      <input type="text" id="cardNumber" name="cardNumber" required>
+      <div class="input-group">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber">
+      </div>
 
-      <label for="expiry">Expiry Date:</label>
-      <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+      <div class="input-group">
+        <label for="expiry">Expiry Date:</label>
+        <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
+      </div>
 
-      <label for="cvv">CVV:</label>
-      <input type="text" id="cvv" name="cvv" required>
+      <div class="input-group">
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv">
+      </div>
 
       <h2>User Information</h2>
-      <label for="userName">Name:</label>
-      <input type="text" id="userName" name="userName" required>
+      <div class="input-group">
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" name="userName">
+      </div>
 
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" name="dob" required>
+      <div class="input-group">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob">
+      </div>
 
-      <label for="phone">Phone:</label>
-      <input type="text" id="phone" name="phone" required>
+      <div class="input-group">
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone">
+      </div>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+      <div class="input-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+      </div>
 
       <button type="submit">Confirm Reservation</button>
+      
+      <!-- Validation messages container -->
+      <div id="validationMessages" style="color: red; margin-top: 10px;"></div>
     </form>
   </div>
 
@@ -66,32 +85,27 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <h2>Royalea</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec.</p>
+        <h2>Palm Hotel</h2>
+        <p>Experience luxury and comfort at Palm Hotel. Your satisfaction is our priority.</p>
       </div>
-      
+
       <div class="footer-newsletter">
         <h3>Our Newsletter</h3>
         <input type="email" placeholder="Your Email Address" />
         <button class="subscribe-button">Subscribe</button>
       </div>
-      
+
       <div class="footer-contact">
-        <h3>Reservation</h3>
-        <p>+0 (555) 123 45 67</p>
-        <p>royalea@support.com</p>
+        <h3>Contact Us</h3>
+        <p>+1 (800) 123-4567</p>
+        <p>support@palmhotel.com</p>
       </div>
-      
+
       <div class="footer-location">
-        <h3>Our Locations</h3>
-        <p>Callison Laney Buoy Building W 13th Parks Suite 559, Denver</p>
+        <h3>Our Location</h3>
+        <p>123 Palm Street, Miami, FL</p>
       </div>
-      
-      <div class="footer-phone">
-        <h3>Our Phone</h3>
-        <p>+0 (555) 123 45 67</p>
-      </div>
-      
+
       <div class="footer-social">
         <h3>Follow Us :</h3>
         <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
@@ -100,10 +114,10 @@
         <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
       </div>
     </div>
-    
+
     <div class="footer-bottom">
       <p>Copyright © 2024 All rights reserved.</p>
-      <p>Hotel & Resort Template Kit by Codeinsolutions</p>
+      <p>Designed by Palm Hotel Team.</p>
     </div>
   </footer>
 
@@ -111,25 +125,93 @@
     // Get query parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     const roomType = urlParams.get('roomType');
-    const nights = urlParams.get('nights');
-    
-    // Get the price from the roomType value
+    const nights = parseInt(urlParams.get('nights')) || 0;
+    const breakfast = urlParams.get('breakfast') === '10';
+    const lunch = urlParams.get('lunch') === '20';
+    const dinner = urlParams.get('dinner') === '20';
+  
+    // Define room prices and meal costs
     const roomPrices = {
-      "100": "Single - $100 per night",
-      "150": "Double - $150 per night",
-      "250": "Suite - $250 per night"
+      "100": "Single",
+      "150": "Double",
+      "250": "Suite"
     };
-    
+  
+    // Define meal options for the display
+    let additionalOptions = [];
+    if (breakfast) additionalOptions.push('Breakfast');
+    if (lunch) additionalOptions.push('Lunch');
+    if (dinner) additionalOptions.push('Dinner');
+  
+    // Check if breakfast is free when all three meals are selected
+    let discountMessage = '';
+    if (breakfast && lunch && dinner) {
+      discountMessage = 'Breakfast is free!';
+    }
+  
     // Calculate total price
-    const totalPrice = roomType && nights ? roomType * nights : 0;
-    
-    // Update the reservation summary with the selected details
+    let roomCost = roomType ? parseInt(roomType) * nights : 0;
+    let mealCost = 0;
+  
+    if (breakfast) mealCost += 10 * nights;
+    if (lunch) mealCost += 20 * nights;
+    if (dinner) mealCost += 20 * nights;
+  
+    if (breakfast && lunch && dinner) {
+      mealCost -= 10 * nights; // Apply the free breakfast discount
+    }
+  
+    const totalPrice = roomCost + mealCost;
+  
+    // Update the reservation summary
     document.getElementById('reservationSummary').innerHTML = `
-      Room Type: ${roomPrices[roomType] || 'Not selected'} <br>
-      Number of Nights: ${nights || 'Not selected'} <br>
+      Room Type: ${roomPrices[roomType] || 'Not selected'} - ${nights || '0'} nights <br>
+      Additional Options: ${additionalOptions.length > 0 ? additionalOptions.join(', ') : 'None'} <br>
+      ${discountMessage ? discountMessage + '<br>' : ''}
       Estimated Total: $${totalPrice || '0'}
     `;
-  </script>
 
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(event) {
+      let isValid = true;
+      let messages = [];
+
+      // Validate card number (must be exactly 12 digits)
+      const cardNumber = document.getElementById('cardNumber');
+      if (!/^\d{12}$/.test(cardNumber.value)) {
+        messages.push('Card number must be exactly 12 digits.');
+        isValid = false;
+      }
+
+      // Validate cardholder name (only letters)
+      const cardName = document.getElementById('cardName');
+      if (!/^[A-Za-z\s]+$/.test(cardName.value)) {
+        messages.push('Cardholder name must contain only letters.');
+        isValid = false;
+      }
+
+      // Validate CVV (must be exactly 3 digits)
+      const cvv = document.getElementById('cvv');
+      if (!/^\d{3}$/.test(cvv.value)) {
+        messages.push('CVV must be exactly 3 digits.');
+        isValid = false;
+      }
+
+      // Validate phone number (must be exactly 10 digits)
+      const phone = document.getElementById('phone');
+      if (!/^\d{10}$/.test(phone.value)) {
+        messages.push('Phone number must be exactly 10 digits.');
+        isValid = false;
+      }
+
+      // Display validation messages and prevent form submission if any validation fails
+      if (!isValid) {
+        event.preventDefault();
+        document.getElementById('validationMessages').innerHTML = messages.join('<br>');
+      } else {
+        document.getElementById('validationMessages').innerHTML = '';
+      }
+    });
+  </script>
 </body>
 </html>
